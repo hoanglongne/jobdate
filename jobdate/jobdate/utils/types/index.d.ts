@@ -12,8 +12,11 @@ export type CardData = {
     role: string;
     company: string;
     src: StaticImageData;
-    bio: string;
-    genre: string[];
+    description?: string;
+    benefit?: string[];
+    requirements?: string[];
+    skills?: string[];
+    tags: string[];
 };
 
 export type CardProps = {

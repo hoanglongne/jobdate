@@ -20,7 +20,7 @@ export default function Dummy() {
         }
     };
     return (
-        <div className="relative flex h-screen w-full items-end justify-center overflow-hidden bg-background text-card">
+        <div className="relative flex flex-col pt-32 gap-6 h-screen w-full items-center justify-center overflow-hidden bg-background text-card">
             <AnimatePresence>
                 {cards.length ? (
                     cards.map((card) => (
