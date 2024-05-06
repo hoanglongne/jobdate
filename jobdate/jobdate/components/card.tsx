@@ -35,7 +35,7 @@ const Card = ({ data, active, removeCard }: CardProps) => {
                 <motion.div
                     drag="x"
                     dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-                    className="z-30 flex max-h-[50%] min-h-[40%] w-full p-10 items-center justify-center self-center"
+                    className="absolute top-52 z-30 flex max-h-[50%] min-h-[40%] w-full p-10 items-center justify-center self-center"
                     onDragEnd={dragEnd}
                     initial={{ scale: 0.95, opacity: 0.5 }}
                     animate={{

@@ -14,7 +14,7 @@ export default function SwipeButton({
         removeCard(id, action);
     };
     return (
-        <div className="flex items-center space-x-8 mt-40">
+        <div className="flex items-center space-x-8 absolute bottom-20">
             <button
                 onClick={() => handleSwipe('left')}
                 className="relative w-20 h-20 overflow-visible bg-[#E75B5B] rounded-full z-10"
