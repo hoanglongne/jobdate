@@ -1,3 +1,5 @@
+'use client'
+
 import { CardProps } from '@/utils/types';
 import {
     motion,
@@ -6,15 +8,15 @@ import {
     useTransform,
 } from 'framer-motion';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SwipeButton from './swipeButtons';
 
 const Card = ({ data, active, removeCard }: CardProps) => {
-    const [exitX, setExitX] = useState(0);
 
     const x = useMotionValue(0);
     const rotate = useTransform(x, [-200, 200], [-25, 25]);
     const opacity = useTransform(x, [-200, -125, 0, 125, 200], [0, 1, 1, 1, 0]);
+    const [exitX, setExitX] = useState(0);
 
     const dragEnd = (
         e: MouseEvent | TouchEvent | PointerEvent,
@@ -35,7 +37,7 @@ const Card = ({ data, active, removeCard }: CardProps) => {
                 <motion.div
                     drag="x"
                     dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-                    className="absolute top-52 z-30 flex max-h-[50%] min-h-[40%] w-full p-10 items-center justify-center self-center"
+                    className="absolute top-52 z-30 flex max-h-[50%] min-h-[40%] w-full lg:w-[60%] xl:w-[35%] p-10 items-center justify-center self-center"
                     onDragEnd={dragEnd}
                     initial={{ scale: 0.95, opacity: 0.5 }}
                     animate={{
@@ -47,7 +49,7 @@ const Card = ({ data, active, removeCard }: CardProps) => {
                     whileDrag={{ cursor: 'grabbing' }}
                     exit={{ x: exitX }}
                 >
-                    <div className="scrollCards absolute overflow-y-scroll rounded-[75px] border-[2.5px] border-card bg-foreground px-8 md:px-10 py-12 lg:px-12 lg:py-14">
+                    <div className="scrollCards font-kanit absolute overflow-y-scroll rounded-[75px] border-[2.5px] border-card bg-foreground px-8 md:px-10 py-12 lg:px-12 lg:py-14">
                         <div className="relative flex justify-center items-center w-[30%] overflow-hidden mx-auto">
                             <Image
                                 src={data.src}
@@ -63,11 +65,11 @@ const Card = ({ data, active, removeCard }: CardProps) => {
 
                         <hr className='h-px my-3 md:my-5 lg:my-6 mx-10 bg-[#727196] border-0 rounded' />
 
-                        <div className="font-kanit text-lg md:text-xl tracking-[2px] font-extrabold text-card">
+                        <div className="text-lg md:text-xl tracking-[2px] font-extrabold text-card">
                             <p>{data.role}</p>
                         </div>
 
-                        <div className="font-kanit text-sm font-extralight text-card">
+                        <div className="text-sm font-extralight text-card">
                             <p>{data.company}</p>
                         </div>
                         <div className="mt-3 flex flex-wrap justify-center gap-1 md:gap-2 gap-y-2 text-xs md:text-sm font-extralight">

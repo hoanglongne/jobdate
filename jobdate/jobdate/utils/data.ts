@@ -1,4 +1,4 @@
-import Logo from '../public/logo.png';
+import Logo from '../public/companyLogo.png';
 export const cardData = [
     {
         id: 0,

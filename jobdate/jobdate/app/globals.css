@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 @layer base {
   :root {
     --background: 200 20% 98%;
@@ -20,6 +21,18 @@
   }
 }
 
+.lilitaOne {
+  font-family: var(--lilita-one-font),
+}
+
+.bebasNeue {
+  font-family: var(--bebas-neue-font),
+}
+
+.kanit {
+  font-family: var(--kanit-font),
+}
+
 
 .scrollCards::-webkit-scrollbar {
   display: none;
@@ -31,4 +44,11 @@ img {
   -webkit-user-drag: none;
   -webkit-user-select: none;
   -ms-user-select: none;
+}
+
+.text-stroke {
+  -webkit-text-stroke: 0.8px black;
+  /* width and color of stroke */
+  color: #FBDFFF;
+  /* text color */
 }

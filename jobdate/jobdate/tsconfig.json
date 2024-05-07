@@ -34,7 +34,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "app/tinder/page.jsx"
+    "app/protected/page.jsx"
   ],
   "exclude": [
     "node_modules"

@@ -23,6 +23,7 @@ export type CardProps = {
     data: CardData;
     active: boolean;
     removeCard: (id: number, action: 'right' | 'left') => void;
+
 };
 
 export type SwipeButtonProps = {

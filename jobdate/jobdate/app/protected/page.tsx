@@ -1,32 +1,26 @@
-import AuthButton from "@/components/AuthButton";
+import SideBar from "@/components/SideBar";
+import Swipe from "@/components/Swipe";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
-export default async function ProtectedPage() {
-  const supabase = createClient();
+export default async function SwipePage() {
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    const supabase = createClient();
 
-  if (!user) {
-    return redirect("/login");
-  }
+    const {
+        data: { user },
+    } = await supabase.auth.getUser();
 
-  return (
-    <div className="flex-1 w-full flex flex-col gap-20 items-center">
-      <div className="w-full">
+    if (!user) {
+        return redirect("/login");
+    }
 
-        <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-          <div className="w-full max-w-4xl flex justify-between items-center p-3 text-sm">
-            <h1>
-              JobDate
-            </h1>
-            <AuthButton />
-          </div>
-        </nav>
-      </div>
-
-    </div>
-  );
+    return (
+        <div >
+            <div className='w-screen h-screen flex font-lilitaOne'>
+                <SideBar />
+                <Swipe />
+            </div>
+        </div>
+    );
 }

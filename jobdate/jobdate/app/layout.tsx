@@ -1,4 +1,3 @@
-import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import { Lilita_One, Bebas_Neue, Kanit } from "next/font/google"
 
@@ -36,7 +35,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${bebasNeue.className} ${lilitaOne.className} ${kanit.className} `}>
+    <html lang="en" className={`${lilitaOne.variable} ${bebasNeue.variable} ${kanit.variable} `}>
       <body className="bg-background text-foreground">
         <main className="min-h-screen flex flex-col items-center">
           {children}

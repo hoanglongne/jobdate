@@ -1,5 +1,3 @@
-const { link } = require('fs');
-
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -16,10 +14,11 @@ module.exports = {
           1: "#F8D6B4"
         },
         card: "#47475B",
+        sidebar: "#727196"
       },
       fontFamily: {
-        kanit: ['var(--kanit-font)', "sans-serif"],
         bebasNeue: ['var(--bebas-neue-font)', "sans-serif"],
+        kanit: ['var(--kanit-font)', "sans-serif"],
         lilitaOne: ['var(--lilita-one-font)', "sans-serif"],
       }
     },

@@ -5,12 +5,14 @@ import { cardData } from '@/utils/data';
 import { AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 
-export default function Dummy() {
+export default function Swipe() {
+
     const [cards, setCards] = useState<CardData[]>(cardData);
     const [rightSwipe, setRightSwipe] = useState(0);
     const [leftSwipe, setLeftSwipe] = useState(0);
 
     const activeIndex = cards.length - 1;
+
     const removeCard = (id: number, action: 'right' | 'left') => {
         setCards((prev) => prev.filter((card) => card.id !== id));
         if (action === 'right') {
