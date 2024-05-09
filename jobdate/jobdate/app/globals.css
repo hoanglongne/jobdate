@@ -21,18 +21,6 @@
   }
 }
 
-.lilitaOne {
-  font-family: var(--lilita-one-font),
-}
-
-.bebasNeue {
-  font-family: var(--bebas-neue-font),
-}
-
-.kanit {
-  font-family: var(--kanit-font),
-}
-
 
 .scrollCards::-webkit-scrollbar {
   display: none;
