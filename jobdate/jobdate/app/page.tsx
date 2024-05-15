@@ -1,16 +1,16 @@
-import AuthButton from "../components/AuthButton";
+'use client'
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { redirect } from "next/navigation";
+export default function Index() {
 
-export default async function Index() {
+  useEffect(() => {
+    redirect('/protected');
+  }, []);
 
   return (
-    <div className="flex-1 w-full flex flex-col gap-20 items-center">
-      <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-        <div className="w-full max-w-4xl flex justify-between items-center p-3 text-sm">
-          <h1>JOBDATE</h1>
-          <AuthButton />
-        </div>
-      </nav>
-
-    </div>
+    <h1>
+      Please go to the protected path and Login to continue
+    </h1>
   );
 }

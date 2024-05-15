@@ -37,6 +37,34 @@ img {
 .text-stroke {
   -webkit-text-stroke: 0.8px black;
   /* width and color of stroke */
-  color: #FBDFFF;
+  color: #FDF0FF;
   /* text color */
+}
+
+.profile-text-stroke {
+  -webkit-text-stroke: 0.5px #752525;
+  color: #FFEEEE;
+  letter-spacing: 0.05em;
+}
+
+.half-bordered {
+  position: relative;
+  /* Needed for pseudo-element positioning */
+  padding-right: 10px;
+  /* Add space for the border */
+
+}
+
+.half-bordered:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 1.5%;
+  height: 180%;
+  /* Fills the entire height of the component */
+  background-color: #47475B;
+  translate: 0 -25%;
+
+  /* Border color */
 }

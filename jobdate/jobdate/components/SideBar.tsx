@@ -6,21 +6,21 @@ import Link from 'next/link';
 const SideBar = ({ smallScreen }: { smallScreen: boolean }) => {
 
     return (
-        <div className={`${smallScreen ? 'flex md:hidden w-full' : 'hidden md:flex border-r-[2.5px] border-black'} h-screen w-[400px] bg-sidebar flex-col items-center gap-10 font-lilitaOne text-xl lg:font-2xl`}>
+        <div className={`${smallScreen ? 'flex md:hidden w-full' : 'hidden md:flex border-r-[2.5px] border-[#806784] w-auto min-w-[260px]'} fixed h-screen bg-sidebar flex-col items-center gap-10 font-lilitaOne text-xl lg:font-2xl`}>
             <div className='w-1/2 mt-5 flex justify-center'>
                 <Image src={Logo} height={100} width={200} alt='Logo' />
             </div>
 
             <div className='flex flex-col gap-5 items-center'>
-                <Link href=''><h3 className='text-stroke'>Swipe</h3></Link>
+                <Link href='/protected'><h3 className='text-stroke'>Swipe</h3></Link>
                 <Link href=''><h3 className='text-stroke'>Application</h3></Link>
-                <Link href=''><h3 className='text-stroke'>Profile</h3></Link>
+                <Link href='/protected/profile'><h3 className='text-stroke'>Profile</h3></Link>
                 <Link href=''><h3 className='text-stroke'>Settings</h3></Link>
             </div>
 
             <div className='mb-10 mt-auto'>
-                <Link href='protected/logout'>
-                    <button className="text-sm py-2 px-5 text-[#47475B] border-2 border-[#47475B] rounded-md no-underline bg-[#d76666] hover:bg-[#c55555] transition duration-200">
+                <Link href='/logout'>
+                    <button className="text-sm font-kanit font-medium py-2 px-6 text-[#DB684F] border-2 border-[#F2A290] rounded-md no-underline bg-[#FFCFCF] hover:bg-[#ffc1c1] transition duration-200">
                         Logout
                     </button>
                 </Link>

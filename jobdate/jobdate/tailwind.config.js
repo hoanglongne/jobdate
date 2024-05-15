@@ -7,14 +7,18 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        background: "#FBDFFF",
+        background: "#FDF0FF",
         foreground: "#FFF3EA",
         btn: {
-          background: "hsl(var(--btn-background))",
+          background: "hsl(var(--btn-backgrounds))",
           1: "#F8D6B4"
         },
         card: "#47475B",
-        sidebar: "#727196"
+        sidebar: "#272741",
+        profile: "#6E8C77"
+      },
+      boxShadow: {
+        profileBox: '2.5px 2.5px 0px 0px rgba(71, 71, 91, 1)',
       },
       fontFamily: {
         bebasNeue: ['var(--bebas-neue-font)', "sans-serif"],

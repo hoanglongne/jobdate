@@ -18,18 +18,18 @@ export default async function AuthButton() {
   };
 
   return user ? (
-    <div className="flex items-center gap-4 flex-col text-sm font-lilitaOne">
+    <div className="flex items-center gap-4 flex-col text-sm font-semibold">
 
       <span className="text-xl text-card">
         Hey, {user.email}!
       </span>
       <h3 className='text-xl text-card' >You wanna logout?</h3>
-      <form action={signOut} className="flex gap-2">
-        <button className="py-2 px-5 text-[#47475B] border-2 border-[#47475B] rounded-md no-underline bg-[#d76666] hover:bg-[#c55555] transition duration-200">
+      <form action={signOut} className="flex gap-2 font-kanit font-medium">
+        <button className="text-sm py-2 px-6 text-[#DB684F] border-2 border-[#F2A290] rounded-md no-underline bg-[#FFCFCF] hover:bg-[#ffc1c1] transition duration-200">
           Logout
         </button>
         <Link href="/protected">
-          <button className="py-2 px-5 text-[#47475B] border-2 border-[#47475B] rounded-md no-underline bg-[#aaaaaa] hover:bg-[#9a9a9a] transition duration-200">
+          <button className="py-2 px-5 text-[#33333d] border-2 border-[#47475B] rounded-md no-underline bg-[#dadada] hover:bg-[#c3c3c3] transition duration-200">
             Back
           </button>
         </Link>
