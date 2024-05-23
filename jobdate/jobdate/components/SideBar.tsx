@@ -15,7 +15,7 @@ const SideBar = ({ smallScreen }: { smallScreen: boolean }) => {
                 <Link href='/protected'><h3 className='text-stroke'>Swipe</h3></Link>
                 <Link href=''><h3 className='text-stroke'>Application</h3></Link>
                 <Link href='/protected/profile'><h3 className='text-stroke'>Profile</h3></Link>
-                <Link href=''><h3 className='text-stroke'>Settings</h3></Link>
+                <Link href='/protected/settings'><h3 className='text-stroke'>Settings</h3></Link>
             </div>
 
             <div className='mb-10 mt-auto'>

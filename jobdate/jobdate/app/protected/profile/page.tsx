@@ -16,8 +16,8 @@ const Profile = () => {
     return (
         <div className=' flex flex-col h-screen w-full p-6 mt-8 md:mt-0 md:p-8 text-card'>
             <div className='w-full relative'>
-                <h1 className='absolute z-10 left-5 font-bebasNeue font-bold text-5xl profile-text-stroke '>Your Profile</h1>
-                <div className='z-0 bg-[#FFEEEE] border-2 border-[#752525] p-7 mt-5 rounded-2xl'>
+                <h1 className='absolute z-10 left-5 font-kanit text-profile font-bold text-5xl'>Your Profile</h1>
+                <div className='z-0 bg-[#FFEEEE] border-2 border-profile p-7 mt-7 rounded-2xl'>
                     <p className='font-medium'>This is where to store and update your information, which will be use to gathering new job for you every day!  At cursus nunc amet ipsum in. Nunc nisi auctor.</p>
                 </div>
 

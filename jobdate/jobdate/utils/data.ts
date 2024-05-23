@@ -83,6 +83,50 @@ export const cardData = [
 
 ];
 
+export const siteOptions = [
+    { name: "linkedIn", label: "LinkedIn" },
+    { name: "wellfound", label: "Wellfound" },
+    { name: "glints", label: "Glints" },
+    { name: "glassdoor", label: "Glassdoor" },
+    { name: "indeed", label: "Indeed" },
+    { name: "itviec", label: "ITviec" },
+    { name: "vietnamworks", label: "Vietnamworks" },
+    { name: "careerlinks", label: "Careerlinks" },
+    { name: "topdev", label: "TopDev" },
+];
+
+export const languageOptions = [
+    { value: "english", label: "English" },
+    { value: "mandarin_chinese", label: "Mandarin Chinese" },
+    { value: "hindi", label: "Hindi" },
+    { value: "spanish", label: "Spanish" },
+    { value: "french", label: "French" },
+    { value: "standard_arabic", label: "Standard Arabic" },
+    { value: "bengali", label: "Bengali" },
+    { value: "portuguese", label: "Portuguese" },
+    { value: "russian", label: "Russian" },
+    { value: "urdu", label: "Urdu" },
+    { value: "indonesian", label: "Indonesian" },
+    { value: "german", label: "German" },
+    { value: "japanese", label: "Japanese" },
+    { value: "punjabi", label: "Punjabi" },
+    { value: "marathi", label: "Marathi" },
+    { value: "telugu", label: "Telugu" },
+    { value: "tamil", label: "Tamil" },
+    { value: "korean", label: "Korean" },
+    { value: "wu chinese", label: "Wu Chinese" },
+];
+
+export const dataResistOptions = [
+    { value: "5days", label: "5 days" },
+    { value: "15days", label: "15 days" },
+    { value: "30days", label: "30 days" },
+    { value: "60days", label: "60 days" },
+    { value: "90days", label: "90 days" },
+];
+
+
+
 export const skills = [
     { "value": 'nextjs', "label": 'Nextjs' },
     { "value": 'typescript', "label": 'Typescript' },
