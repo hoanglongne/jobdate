@@ -11,7 +11,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import SwipeButton from './swipeButtons';
 
-const Card = ({ data, active, removeCard }: CardProps) => {
+const Card = ({ jobs, active, removeCard }: CardProps) => {
 
     const x = useMotionValue(0);
     const rotate = useTransform(x, [-200, 200], [-25, 25]);
@@ -24,12 +24,13 @@ const Card = ({ data, active, removeCard }: CardProps) => {
     ) => {
         if (info.offset.x > 100) {
             setExitX(200);
-            removeCard(data.id, 'right');
+            removeCard(jobs.jobs.id, 'right');
         } else if (info.offset.x < -100) {
             setExitX(-200);
-            removeCard(data.id, 'left');
+            removeCard(jobs.jobs.id, 'left');
         }
     };
+
 
     return (
         <>
@@ -37,7 +38,7 @@ const Card = ({ data, active, removeCard }: CardProps) => {
                 <motion.div
                     drag="x"
                     dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-                    className="absolute top-52 z-30 flex max-h-[50%] min-h-[40%] w-full lg:w-[60%] xl:w-[35%] p-10 items-center justify-center self-center"
+                    className="absolute top-52 z-30 flex max-h-[50%] min-h-[40%] w-full sm:w-[75%] md:w-[65%] lg:w-[45%] xl:w-[35%] p-10 items-center justify-center self-center"
                     onDragEnd={dragEnd}
                     initial={{ scale: 0.95, opacity: 0.5 }}
                     animate={{
@@ -49,13 +50,13 @@ const Card = ({ data, active, removeCard }: CardProps) => {
                     whileDrag={{ cursor: 'grabbing' }}
                     exit={{ x: exitX }}
                 >
-                    <div className="scrollCards font-kanit absolute mx-8 md:mx-0 overflow-y-scroll rounded-[75px] border-[2.5px] border-card bg-foreground px-8 md:px-10 py-12 lg:px-12 lg:py-14">
+                    <div className="scrollCards font-kanit absolute mx-8 md:mx-0 overflow-y-hidden max-h-[70vh] rounded-[75px] border-[2.5px] border-card bg-foreground px-8 md:px-10 py-12 lg:px-10 lg:py-14">
                         <div className="relative flex justify-center items-center w-[30%] overflow-hidden mx-auto">
                             <Image
-                                src={data.src}
+                                src={jobs.jobs.logo_url}
                                 alt=""
-                                width={100} // aspect ratio width
-                                height={70}
+                                width={200} // aspect ratio width
+                                height={1500}
                                 layout='responsive'
                                 style={{
                                     objectFit: 'cover',
@@ -66,32 +67,36 @@ const Card = ({ data, active, removeCard }: CardProps) => {
                         <hr className='h-px my-3 md:my-5 lg:my-6 mx-10 bg-[#727196] border-0 rounded' />
 
                         <div className="text-lg md:text-xl tracking-[2px] font-extrabold text-card">
-                            <p>{data.role}</p>
+                            <p>{jobs.jobs.role}</p>
                         </div>
 
                         <div className="text-sm font-extralight text-card">
-                            <p>{data.company}</p>
+                            <p>{jobs.jobs.company_name}</p>
                         </div>
-                        <div className="mt-3 flex flex-wrap justify-center gap-1 md:gap-2 gap-y-2 text-xs md:text-sm font-extralight">
-                            {data.tags.map((item, idx) => (
-                                <p key={idx} className="rounded-[20px] bg-btn-1 border-[1.5px] border-card px-4 py-[5px]">
-                                    {item}
-                                </p>
-                            ))}
+                        <div className="mt-3 flex flex-wrap justify-center gap-1 md:gap-2 gap-y-2 text-xs font-light">
+                            <p className="rounded-[20px] bg-btn-1 border-[1.5px] border-card px-4 py-[5px]">
+                                {jobs.jobs.location}
+                            </p>
+                            <p className="rounded-[20px] bg-btn-2 border-[1.5px] border-card px-4 py-[5px]">
+                                {jobs.jobs.salary_range[0]} - {jobs.jobs.salary_range[1]}$
+                            </p>
+                            <p className="rounded-[20px] bg-btn-3 border-[1.5px] border-card px-4 py-[5px]">
+                                {jobs.jobs.work_type}
+                            </p>
                         </div>
 
 
                         {
-                            data.skills && (
-                                <h3 className='mt-4'>Skillset</h3>
+                            jobs.jobs.skillset && (
+                                <h3 className='mt-3'>Skillset</h3>
                             )
                         }
 
                         {
-                            data.skills && (
-                                <div className="mt-3 flex flex-col gap-[2px] text-sm font-light">
-                                    {data.skills.map((item, idx) => (
-                                        <p key={idx} className="">
+                            jobs.jobs.skillset && (
+                                <div className="mt-1 flex flex-col gap-[2px] text-sm font-light">
+                                    {jobs.jobs.skillset.map((item, idx) => (
+                                        <p key={idx} className="capitalize">
                                             - {item}
                                         </p>
                                     ))}
@@ -100,19 +105,14 @@ const Card = ({ data, active, removeCard }: CardProps) => {
                         }
 
                         {
-                            data.requirements && (
-                                <h3 className='mt-4'>Requirement</h3>
-                            )
-                        }
-
-                        {
-                            data.requirements && (
-                                <div className="mt-3 flex flex-col gap-[2px] text-sm font-light">
-                                    {data.requirements.map((item, idx) => (
-                                        <p key={idx} className="">
-                                            - {item}
-                                        </p>
-                                    ))}
+                            jobs.jobs.jd && (
+                                <div className="mt-3 flex flex-col gap-[2px]">
+                                    <h3>{jobs.jobs.jd.title}</h3>
+                                    <div className='fade-out text-sm font-light'>
+                                        {jobs.jobs.jd.content.map((item, idx) => (
+                                            <p key={idx}>* {item}</p>))
+                                        }
+                                    </div>
                                 </div>
                             )
                         }
@@ -128,7 +128,7 @@ const Card = ({ data, active, removeCard }: CardProps) => {
                 </motion.div>
             ) : null}
 
-            <SwipeButton exit={setExitX} removeCard={removeCard} id={data.id} />
+            {jobs.jobs && <SwipeButton exit={setExitX} removeCard={removeCard} id={jobs.jobs.id} />}
         </>
     );
 };

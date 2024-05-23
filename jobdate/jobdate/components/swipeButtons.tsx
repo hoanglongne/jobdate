@@ -40,7 +40,6 @@ export default function SwipeButton({
                         <path d="M17.1429 3.42857H20.5714V6.85714H17.1429V3.42857Z" fill="black" />
                         <path d="M20.5714 0H24V3.42857H20.5714V0Z" fill="black" />
                     </svg>
-
                 </span>
             </button>
 

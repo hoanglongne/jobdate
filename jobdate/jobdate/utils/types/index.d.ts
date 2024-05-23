@@ -1,3 +1,4 @@
+import { UUID } from 'crypto';
 import { StaticImageData } from 'next/image';
 import { SetStateAction } from 'react';
 
@@ -7,27 +8,36 @@ type TracksData = {
     img: string;
 };
 
+
 export type CardData = {
-    id: number;
-    role: string;
-    company: string;
-    src: StaticImageData;
-    description?: string;
-    benefit?: string[];
-    requirements?: string[];
-    skills?: string[];
-    tags: string[];
-};
+    jobs: {
+        id: string,
+        jd: {
+            title: string,
+            content: string[]
+        }, // Specify jd as JSON array type
+        yoe: Number[],
+        role: string,
+        job_link: string,
+        logo_url: string,
+        skillset: string[],
+        company_name: string,
+        location: string,
+        salary_range: string[],
+        work_type: string,
+        contract_type: string
+    }
+}
 
 export type CardProps = {
-    data: CardData;
+    jobs: CardData;
     active: boolean;
-    removeCard: (id: number, action: 'right' | 'left') => void;
+    removeCard: (id: string, action: 'right' | 'left') => void;
 
 };
 
 export type SwipeButtonProps = {
     exit: (value: SetStateAction<number>) => void;
-    removeCard: (id: number, action: 'right' | 'left') => void;
-    id: number;
+    removeCard: (id: string, action: 'right' | 'left') => void;
+    id: string;
 };

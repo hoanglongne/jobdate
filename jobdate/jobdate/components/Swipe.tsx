@@ -1,35 +1,34 @@
 'use client'
 import Card from '@/components/card';
 import { CardData } from '@/utils/types';
-import { cardData } from '@/utils/data';
 import { AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-export default function Swipe() {
+export default function Swipe({ cardsData }: { cardsData: CardData[] }) {
 
-    const [cards, setCards] = useState<CardData[]>(cardData);
+    const [cards, setCards] = useState<CardData[]>(cardsData);
+    const [activeIndex, setActiveIndex] = useState(cards.length - 1);
     const [rightSwipe, setRightSwipe] = useState(0);
     const [leftSwipe, setLeftSwipe] = useState(0);
 
-    const activeIndex = cards.length - 1;
-
-    const removeCard = (id: number, action: 'right' | 'left') => {
-        setCards((prev) => prev.filter((card) => card.id !== id));
+    const removeCard = (id: string, action: 'right' | 'left') => {
+        setCards((prev) => prev.filter((card) => card.jobs.id !== id));
         if (action === 'right') {
             setRightSwipe((prev) => prev + 1);
         } else {
             setLeftSwipe((prev) => prev + 1);
         }
+        setActiveIndex((prev) => prev - 1);
     };
     return (
         <div className="relative flex flex-col pt-28 h-screen w-full items-center justify-center overflow-hidden bg-background text-card">
             <AnimatePresence>
                 {cards.length ? (
-                    cards.map((card) => (
+                    cards.map((card, index) => (
                         <Card
-                            key={card.id}
-                            data={card}
-                            active={card.id === activeIndex}
+                            key={card.jobs.id}
+                            jobs={card}
+                            active={index === activeIndex}
                             removeCard={removeCard}
                         />
                     ))

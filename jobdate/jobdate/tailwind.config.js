@@ -11,7 +11,9 @@ module.exports = {
         foreground: "#FFF3EA",
         btn: {
           background: "hsl(var(--btn-backgrounds))",
-          1: "#F8D6B4"
+          1: "#F8D6B4",
+          2: "#A7DDD8",
+          3: "#FFB3EF",
         },
         card: "#47475B",
         sidebar: "#272741",
