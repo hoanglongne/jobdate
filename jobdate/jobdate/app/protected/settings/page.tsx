@@ -88,7 +88,7 @@ const Settings = () => {
                                 <h1 className='font-extrabold text-2xl'>JOB RESIST</h1>
                                 <p className='font-extralight'>For storage optimize purpose, we will remove your old fetched jobs, but we will let you choose how long your data stay.</p>
                             </div>
-                            <ProfileTag name="Duration">
+                            <ProfileTag name="Duration">2
                                 <Select>
                                     <SelectTrigger className=" w-full">
                                         <SelectValue placeholder="15 days" />
@@ -103,8 +103,8 @@ const Settings = () => {
                                 </Select>
                             </ProfileTag>
                         </div>
-                        <div className='flex justify-end items-end'>
-                            <button className='bg-[#6E8C77] border-2 border-[#085820] text-foreground rounded-lg px-7 py-3 font-kanit mr-20'>Save Changes</button>
+                        <div className='flex md:justify-end md:items-end'>
+                            <button className='bg-[#6E8C77] border-2 border-[#085820] text-foreground rounded-lg px-7 py-3 font-kanit lg:mr-20'>Save Changes</button>
                         </div>
                     </div>
                 </div>

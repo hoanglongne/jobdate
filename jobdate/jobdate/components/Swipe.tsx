@@ -2,7 +2,11 @@
 import Card from '@/components/card';
 import { CardData } from '@/utils/types';
 import { AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import decor1 from '@/public/decor1.svg';
+import decor2 from '@/public/decor2.svg';
+import decor3 from '@/public/decor3.svg';
 
 export default function Swipe({ cardsData }: { cardsData: CardData[] }) {
 
@@ -22,6 +26,15 @@ export default function Swipe({ cardsData }: { cardsData: CardData[] }) {
     };
     return (
         <div className="relative flex flex-col pt-28 h-screen w-full items-center justify-center overflow-hidden bg-background text-card">
+            <div className='hidden lg:block absolute z-0 top-52 right-[120px]'>
+                <Image src={decor1} alt='decor' />
+            </div>
+            <div className='hidden lg:block absolute z-0 top-20 left-[60px]'>
+                <Image src={decor2} alt='decor' />
+            </div>
+            <div className='hidden lg:block absolute z-0 bottom-0 left-[-165px]'>
+                <Image src={decor3} alt='decor' />
+            </div>
             <AnimatePresence>
                 {cards.length ? (
                     cards.map((card, index) => (

@@ -22,7 +22,7 @@ const ProtectedLayout = ({
             </div>
             <div className='w-screen h-screen flex'>
                 <SideBar smallScreen={false} />
-                <div className='hidden md:block h-screen w-[400px]' />
+                <div className='hidden md:block h-screen w-auto min-w-[260px]' />
                 {children}
             </div>
         </>
