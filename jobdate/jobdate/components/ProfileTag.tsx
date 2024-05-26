@@ -6,7 +6,7 @@ const ProfileTag = ({ name, children }: { name: string, children: React.ReactNod
             <div className='min-w-[80px] md:min-w-[100px] flex justify-center h-full text-profile font-bold half-bordered'>
                 <h1>{name}</h1>
             </div>
-            <div className='flex-1 px-4 flex items-center'>
+            <div className='px-4 text-sm w-full md:text-base'>
                 {children}
             </div>
         </div>

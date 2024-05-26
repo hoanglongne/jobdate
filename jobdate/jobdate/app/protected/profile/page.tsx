@@ -1,4 +1,5 @@
-import React from 'react'
+"use client"
+import React, { useEffect, useState } from 'react'
 import ProfileTag from '@/components/ProfileTag'
 import {
     Select,
@@ -11,8 +12,86 @@ import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { countryData, skills } from '@/utils/data'
 import ExpBar from '@/components/ExpBar'
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormMessage,
+} from "@/components/ui/form"
+import { createClient } from '@/utils/supabase/client'
+import { Input } from "@/components/ui/input"
+import { SupabaseClient } from '@supabase/supabase-js'
+
+
+const formSchema = z.object({
+    fullname: z.string().min(2, { message: 'Fullname is required' }).max(50),
+    role: z.string().min(2, { message: 'role is required' }).max(50),
+    work_type: z.enum(["onsite", "hydrid", "remote"], { message: 'Work type is required' }),
+    location: z.string().max(50),
+    // skills: z.array(z.string()).nonempty({ message: 'Skills are required' }),
+    skills: z.string(),
+    number: z.string().refine((value) => /^[+]{1}(?:[0-9-()/.]\s?){7,15}[0-9]{1}$/.test(value)),
+})
 
 const Profile = () => {
+
+    const supabase: SupabaseClient = createClient()
+
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            fullname: "",
+            role: "",
+            work_type: "onsite",
+            location: "",
+            skills: "",
+            number: "",
+        },
+    })
+
+    const { setValue, watch } = form;
+
+    useEffect(() => {
+        async function fetchProfile() {
+            const {
+                data: { user },
+            } = await supabase.auth.getUser();
+
+            const { data } = await supabase.from('users').select().eq('id', user?.id);
+
+            if (data && data[0]) {
+                setValue('fullname', data[0].full_name);
+                setValue('role', data[0].role);
+                setValue('work_type', data[0].work_type);
+                setValue('skills', data[0].skillset);
+                setValue('number', data[0].number);
+                setValue('location', data[0].location);
+            }
+        }
+
+        fetchProfile();
+    }, []);
+
+    let location = watch('location');
+
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        const {
+            data: { user },
+        } = await supabase.auth.getUser();
+
+        const { error } = await supabase
+            .from('users')
+            .upsert({ full_name: values.fullname, email: user?.email, role: values.role, work_type: values.work_type, location: values.location, skillset: values.skills, number: values.number })
+
+        if (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <div className=' flex flex-col h-screen w-full p-6 mt-8 md:mt-0 md:p-8 text-card'>
             <div className='w-full relative'>
@@ -21,85 +100,161 @@ const Profile = () => {
                     <p className='font-medium'>This is where to store and update your information, which will be use to gathering new job for you every day!  At cursus nunc amet ipsum in. Nunc nisi auctor.</p>
                 </div>
 
-                <div className='grid w-full grid-cols-2 lg:grid-cols-5 gap-y-6 gap-x-8 mt-12 px-2'>
-                    <div className='col-span-2 md:col-span-4 lg:col-span-3'>
-                        <ProfileTag name="Fullname">
-                            <input type="text" className="bg-transparent focus:outline-none w-full" />
-                        </ProfileTag>
-                    </div>
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)}>
+                        <div className='grid w-full grid-cols-2 lg:grid-cols-5 gap-y-6 gap-x-8 mt-12 px-2'>
+                            <div className='col-span-2 md:col-span-4 lg:col-span-3'>
+                                <ProfileTag name="Fullname">
+                                    <FormField
+                                        control={form.control}
+                                        name="fullname"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormControl>
+                                                    <Input {...field} />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                </ProfileTag>
+                            </div>
 
-                    <div className='col-span-2 md:col-span-2'>
-                        <ProfileTag name="Role">
-                            <input type="text" className="bg-transparent focus:outline-none w-full" />
-                        </ProfileTag>
-                    </div>
+                            <div className='col-span-2 md:col-span-2'>
+                                <ProfileTag name="Role">
+                                    <FormField
+                                        control={form.control}
+                                        name="role"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormControl>
+                                                    <Input {...field} />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                </ProfileTag>
+                            </div>
 
-                    <div className='col-span-2 md:col-span-4 lg:col-span-3'>
-                        <ProfileTag name="Worktype">
-                            <RadioGroup className='space-x-1 md:space-x-3' defaultValue="onsite">
-                                <div className="flex items-center space-x-1">
-                                    <RadioGroupItem value="onsite" id="onsite" />
-                                    <Label htmlFor="onsite">Onsite</Label>
-                                </div>
-                                <div className="flex items-center space-x-1">
-                                    <RadioGroupItem value="remote" id="remote" />
-                                    <Label htmlFor="remote">Remote</Label>
-                                </div>
-                                <div className="flex items-center space-x-1">
-                                    <RadioGroupItem value="hydrid" id="hydrid" />
-                                    <Label htmlFor="hydrid">Hydrid</Label>
-                                </div>
-                            </RadioGroup>
+                            <div className='col-span-2 md:col-span-4 lg:col-span-3'>
+                                <ProfileTag name="Worktype">
+                                    <FormField
+                                        control={form.control}
+                                        name="work_type"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <RadioGroup onValueChange={field.onChange} defaultValue="onsite">
+                                                    <FormControl>
+                                                        <div className='space-x-1 md:space-x-3 flex'>
+                                                            <div className="flex items-center space-x-1">
+                                                                <RadioGroupItem value="onsite" id="onsite" />
+                                                                <Label htmlFor="onsite">Onsite</Label>
+                                                            </div>
+                                                            <div className="flex items-center space-x-1">
+                                                                <RadioGroupItem value="remote" id="remote" />
+                                                                <Label htmlFor="remote">Remote</Label>
+                                                            </div>
+                                                            <div className="flex items-center space-x-1">
+                                                                <RadioGroupItem value="hydrid" id="hydrid" />
+                                                                <Label htmlFor="hydrid">Hydrid</Label>
+                                                            </div>
+                                                        </div>
+                                                    </FormControl>
+                                                </RadioGroup>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
 
-                        </ProfileTag>
-                    </div>
+                                </ProfileTag>
+                            </div>
 
-                    <div className='col-span-2 md:col-span-2'>
-                        <ProfileTag name="Number">
-                            <input type="text" className="bg-transparent focus:outline-none w-full" />
-                        </ProfileTag>
-                    </div>
+                            <div className='col-span-2 md:col-span-2'>
+                                <ProfileTag name="Number">
+                                    <FormField
+                                        control={form.control}
+                                        name="number"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormControl>
+                                                    <Input {...field} />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                </ProfileTag>
+                            </div>
 
-                    <div className='col-span-2 md:col-span-4 lg:col-span-3'>
-                        <ProfileTag name="Location">
-                            <Select>
-                                <SelectTrigger className=" w-full">
-                                    <SelectValue placeholder="Select your contry" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {
-                                        countryData.map((country) => (
-                                            <SelectItem key={country.code} value={country.code}>{country.name}</SelectItem>
-                                        ))
-                                    }
-                                </SelectContent>
-                            </Select>
-                        </ProfileTag>
-                    </div>
+                            <div className='col-span-2 md:col-span-4 lg:col-span-3'>
+                                <ProfileTag name="Location">
+                                    <FormField
+                                        control={form.control}
+                                        name="location"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <Select onValueChange={field.onChange}>
+                                                    <FormControl>
+                                                        <div>
+                                                            <SelectTrigger className="w-full">
+                                                                <SelectValue placeholder={location || "Select Country"} />
+                                                            </SelectTrigger>
+                                                            <SelectContent>
+                                                                {
+                                                                    countryData.map((country) => (
+                                                                        <SelectItem key={country.code} value={country.code}>{country.name}</SelectItem>
+                                                                    ))
+                                                                }
+                                                            </SelectContent>
+                                                        </div>
+                                                    </FormControl>
+                                                </Select>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                </ProfileTag>
+                            </div>
 
-                    <div className='col-span-2 md:col-span-5 xl:col-span-4'>
-                        <ExpBar />
-                    </div>
+                            <div className='col-span-2 md:col-span-5 xl:col-span-4'>
+                                <ExpBar />
+                            </div>
 
-                    <div className='col-span-2 md:col-span-4 lg:col-span-3'>
-                        <ProfileTag name="Location">
-                            <Select>
-                                <SelectTrigger className=" w-full">
-                                    <SelectValue placeholder="Find and pick your skills" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {
-                                        skills.map((skill) => (
-                                            <SelectItem key={skill.value} value={skill.value}>{skill.label}</SelectItem>
-                                        ))
-                                    }
-                                </SelectContent>
-                            </Select>
-                        </ProfileTag>
-                    </div>
+                            <div className='col-span-2 md:col-span-4 lg:col-span-3'>
+                                <ProfileTag name="Skills">
+                                    <FormField
+                                        control={form.control}
+                                        name="skills"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <Select onValueChange={field.onChange}>
+                                                    <FormControl>
+                                                        <div>
+                                                            <SelectTrigger className=" w-full">
+                                                                <SelectValue placeholder="Find and pick your skills" />
+                                                            </SelectTrigger>
+                                                            <SelectContent>
+                                                                {
+                                                                    skills.map((skill) => (
+                                                                        <SelectItem key={skill.value} value={skill.value}>{skill.label}</SelectItem>
+                                                                    ))
+                                                                }
+                                                            </SelectContent>
+                                                        </div>
+                                                    </FormControl>
+                                                </Select>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                </ProfileTag>
+                            </div>
 
-                </div>
-                <button className='bg-[#6E8C77] border-2 border-[#085820] text-foreground rounded-lg px-7 py-3 font-kanit mb-10 mt-6 ml-2'>Save Changes</button>
+                        </div>
+                        <button type="submit" className='bg-[#6E8C77] border-2 border-[#085820] text-foreground rounded-lg px-7 py-3 font-kanit mb-10 mt-6 ml-2'>Save Changes</button>
+                    </form>
+                </Form>
             </div>
         </div>
     )

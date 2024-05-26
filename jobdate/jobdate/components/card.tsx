@@ -11,6 +11,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import SwipeButton from './swipeButtons';
 
+
 const Card = ({ jobs, active, removeCard }: CardProps) => {
 
     const x = useMotionValue(0);
@@ -51,6 +52,7 @@ const Card = ({ jobs, active, removeCard }: CardProps) => {
                     exit={{ x: exitX }}
                 >
                     <div className="scrollCards font-kanit absolute mx-8 md:mx-0 overflow-y-hidden max-h-[70vh] rounded-[75px] border-[2.5px] border-card bg-foreground px-8 md:px-10 py-12 lg:px-10 lg:py-14">
+
                         <div className="relative flex justify-center items-center w-[30%] overflow-hidden mx-auto">
                             <Image
                                 src={jobs.jobs.logo_url}

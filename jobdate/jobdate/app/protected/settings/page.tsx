@@ -88,7 +88,7 @@ const Settings = () => {
                                 <h1 className='font-extrabold text-2xl'>JOB RESIST</h1>
                                 <p className='font-extralight'>For storage optimize purpose, we will remove your old fetched jobs, but we will let you choose how long your data stay.</p>
                             </div>
-                            <ProfileTag name="Duration">2
+                            <ProfileTag name="Duration">
                                 <Select>
                                     <SelectTrigger className=" w-full">
                                         <SelectValue placeholder="15 days" />
