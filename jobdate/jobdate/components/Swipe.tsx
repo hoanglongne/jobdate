@@ -25,7 +25,7 @@ export default function Swipe({ cardsData }: { cardsData: CardData[] }) {
         setActiveIndex((prev) => prev - 1);
     };
     return (
-        <div className="relative flex flex-col pt-28 h-screen w-full items-center justify-center overflow-hidden bg-background text-card">
+        <div className="relative flex flex-col h-screen w-full items-center justify-center overflow-hidden bg-background text-card">
             <div className='hidden lg:block absolute z-0 top-52 right-[120px]'>
                 <Image src={decor1} alt='decor' />
             </div>

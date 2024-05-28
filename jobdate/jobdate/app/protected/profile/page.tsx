@@ -38,6 +38,7 @@ const formSchema = z.object({
 })
 
 const Profile = () => {
+    const [loading, setLoading] = useState(true);
 
     const supabase: SupabaseClient = createClient()
 
@@ -53,7 +54,7 @@ const Profile = () => {
         },
     })
 
-    const { setValue, watch } = form;
+    const { setValue } = form;
 
     useEffect(() => {
         async function fetchProfile() {
@@ -73,10 +74,8 @@ const Profile = () => {
             }
         }
 
-        fetchProfile();
+        fetchProfile().then(() => setLoading(false));
     }, []);
-
-    let location = watch('location');
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         const {
@@ -90,6 +89,10 @@ const Profile = () => {
         if (error) {
             console.log(error);
         }
+    }
+
+    if (loading) {
+        return <div className='font-kanit text-3xl text-card h-full w-full flex items-center justify-center'>Loading...</div>;
     }
 
     return (
@@ -144,7 +147,7 @@ const Profile = () => {
                                         name="work_type"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <RadioGroup onValueChange={field.onChange} defaultValue="onsite">
+                                                <RadioGroup onValueChange={field.onChange} value={field.value}>
                                                     <FormControl>
                                                         <div className='space-x-1 md:space-x-3 flex'>
                                                             <div className="flex items-center space-x-1">
@@ -198,7 +201,7 @@ const Profile = () => {
                                                     <FormControl>
                                                         <div>
                                                             <SelectTrigger className="w-full">
-                                                                <SelectValue placeholder={location || "Select Country"} />
+                                                                <SelectValue placeholder={field.value || "Select Country"} />
                                                             </SelectTrigger>
                                                             <SelectContent>
                                                                 {
@@ -232,7 +235,7 @@ const Profile = () => {
                                                     <FormControl>
                                                         <div>
                                                             <SelectTrigger className=" w-full">
-                                                                <SelectValue placeholder="Find and pick your skills" />
+                                                                <SelectValue placeholder={field.value || "Select Skills"} />
                                                             </SelectTrigger>
                                                             <SelectContent>
                                                                 {

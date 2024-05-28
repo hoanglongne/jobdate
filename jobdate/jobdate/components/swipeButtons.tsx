@@ -19,10 +19,10 @@ export default function SwipeButton({
         removeCard(id, action);
     };
     return (
-        <div className="flex items-center space-x-8 absolute bottom-0 mb-16 z-40">
+        <div className="flex items-center space-x-8 absolute bottom-0 mb-24 md:mb-16 z-40">
             <button
                 onClick={() => handleSwipe('left')}
-                className="relative w-20 h-20 overflow-visible bg-[#E75B5B] rounded-full z-10 transform hover:scale-105 duration-200"
+                className="relative size-[72px] md:size-20 overflow-visible bg-[#E75B5B] rounded-full z-10 transform hover:scale-105 duration-200"
             >
                 <span className="absolute z-0 w-full h-full border-2 border-black rounded-full translate-x-[-3%] translate-y-[-53%] flex justify-center items-center">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -45,7 +45,7 @@ export default function SwipeButton({
 
             <button
                 onClick={() => handleSwipe('right')}
-                className="relative w-20 h-20 overflow-visible bg-[#B0E3A3] rounded-full z-10 transform hover:scale-105 duration-200"
+                className="relative size-[72px] md:size-20 overflow-visible bg-[#B0E3A3] rounded-full z-10 transform hover:scale-105 duration-200"
             >
                 <span className="absolute z-0 w-full h-full border-2 border-black rounded-full translate-x-[3%] translate-y-[-47%] flex justify-center items-center"><svg width="33" height="27" viewBox="0 0 33 27" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M2.79661 0H13.9831V11.5714H2.79661V0Z" fill="black" />
