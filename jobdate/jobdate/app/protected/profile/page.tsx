@@ -23,8 +23,8 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { createClient } from '@/utils/supabase/client'
-import { Input } from "@/components/ui/input"
 import { SupabaseClient } from '@supabase/supabase-js'
+import { Input } from "@/components/ui/input"
 
 
 const formSchema = z.object({
@@ -39,6 +39,7 @@ const formSchema = z.object({
 
 const Profile = () => {
     const [loading, setLoading] = useState(true);
+    const [userId, setUserId] = useState("");
 
     const supabase: SupabaseClient = createClient()
 
@@ -58,9 +59,12 @@ const Profile = () => {
 
     useEffect(() => {
         async function fetchProfile() {
+
             const {
                 data: { user },
             } = await supabase.auth.getUser();
+
+            setUserId(user?.id as string);
 
             const { data } = await supabase.from('users').select().eq('id', user?.id);
 
@@ -106,6 +110,8 @@ const Profile = () => {
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)}>
                         <div className='grid w-full grid-cols-2 lg:grid-cols-5 gap-y-6 gap-x-8 mt-12 px-2'>
+
+                            {/* //* Fullname */}
                             <div className='col-span-2 md:col-span-4 lg:col-span-3'>
                                 <ProfileTag name="Fullname">
                                     <FormField
@@ -123,6 +129,7 @@ const Profile = () => {
                                 </ProfileTag>
                             </div>
 
+                            {/* //* Role */}
                             <div className='col-span-2 md:col-span-2'>
                                 <ProfileTag name="Role">
                                     <FormField
@@ -140,6 +147,7 @@ const Profile = () => {
                                 </ProfileTag>
                             </div>
 
+                            {/* //* Worktype */}
                             <div className='col-span-2 md:col-span-4 lg:col-span-3'>
                                 <ProfileTag name="Worktype">
                                     <FormField
@@ -173,6 +181,7 @@ const Profile = () => {
                                 </ProfileTag>
                             </div>
 
+                            {/* //* Number */}
                             <div className='col-span-2 md:col-span-2'>
                                 <ProfileTag name="Number">
                                     <FormField
@@ -190,6 +199,7 @@ const Profile = () => {
                                 </ProfileTag>
                             </div>
 
+                            {/* //* Location */}
                             <div className='col-span-2 md:col-span-4 lg:col-span-3'>
                                 <ProfileTag name="Location">
                                     <FormField
@@ -220,10 +230,12 @@ const Profile = () => {
                                 </ProfileTag>
                             </div>
 
+                            {/* //* Experience */}
                             <div className='col-span-2 md:col-span-5 xl:col-span-4'>
-                                <ExpBar />
+                                <ExpBar user={userId} />
                             </div>
 
+                            {/* //* Skills */}
                             <div className='col-span-2 md:col-span-4 lg:col-span-3'>
                                 <ProfileTag name="Skills">
                                     <FormField

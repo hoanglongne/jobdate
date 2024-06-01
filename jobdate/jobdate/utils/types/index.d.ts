@@ -33,8 +33,15 @@ export type CardProps = {
     jobs: CardData;
     active: boolean;
     removeCard: (id: string, action: 'right' | 'left') => void;
-
 };
+
+export interface ExpBarProps {
+    user: string;
+}
+
+export interface ExpCardProps {
+    userId: string;
+}
 
 export type SwipeButtonProps = {
     exit: (value: SetStateAction<number>) => void;
