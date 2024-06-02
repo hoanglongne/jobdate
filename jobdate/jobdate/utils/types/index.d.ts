@@ -40,8 +40,16 @@ export interface ExpBarProps {
 }
 
 export interface ExpCardProps {
-    userId: string;
-}
+    exp: {
+        company: string;
+        role: string;
+        duration: string;
+        desc: string;
+    };
+    index: number;
+    deleteExperience: (idToDelete: number) => void;
+};
+
 
 export type SwipeButtonProps = {
     exit: (value: SetStateAction<number>) => void;
