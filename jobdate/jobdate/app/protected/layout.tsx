@@ -12,7 +12,7 @@ const ProtectedLayout = ({
                 <Sheet>
                     <SheetTrigger>
                         <svg width="22" height="16" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M2 2H20M6.57143 8H16M2 14H20" stroke="#7B7B7B" stroke-width="2.5" stroke-linecap="round" />
+                            <path d="M2 2H20M6.57143 8H16M2 14H20" stroke="#7B7B7B" strokeWidth="2.5" strokeLinecap="round" />
                         </svg>
                     </SheetTrigger>
                     <SheetContent className="w-full p-0 border-0">

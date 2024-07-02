@@ -125,17 +125,15 @@ export const dataResistOptions = [
     { value: "90days", label: "90 days" },
 ];
 
-
-
 export const skills = [
-    { "value": 'nextjs', "label": 'Nextjs' },
-    { "value": 'typescript', "label": 'Typescript' },
-    { "value": 'tailwindcss', "label": 'Tailwindcss' },
-    { "value": 'postcss', "label": 'Postcss' },
-    { "value": 'supabase', "label": 'Supabase' },
-    { "value": 'vercel', "label": 'Vercel' },
-    { "value": 'docker', "label": 'Docker' },
-    { "value": 'kubernetes', "label": 'Kubernetes' },
+    { "name": 'nextjs', "code": 'Nextjs' },
+    { "name": 'typescript', "code": 'Typescript' },
+    { "name": 'tailwindcss', "code": 'Tailwindcss' },
+    { "name": 'postcss', "code": 'Postcss' },
+    { "name": 'supabase', "code": 'Supabase' },
+    { "name": 'vercel', "code": 'Vercel' },
+    { "name": 'docker', "code": 'Docker' },
+    { "name": 'kubernetes', "code": 'Kubernetes' },
 ]
 
 export const countryData = [
@@ -248,8 +246,6 @@ export const countryData = [
     { "name": "Norfolk Island", "code": "Norfolk Island" },
     { "name": "Northern Mariana Islands (the)", "code": "Northern Mariana Islands (the)" },
     { "name": "Palau", "code": "Palau" },
-    { "name": "Pitcairn", "code": "Pitcairn" },
-    { "name": "Samoa", "code": "Samoa" },
     { "name": "Solomon Islands (the)", "code": "Solomon Islands (the)" },
     { "name": "Tokelau", "code": "Tokelau" },
     { "name": "Tuvalu", "code": "Tuvalu" },
@@ -259,7 +255,6 @@ export const countryData = [
     { "name": "Paraguay", "code": "Paraguay" },
     { "name": "Peru", "code": "Peru" },
     { "name": "Philippines (the)", "code": "Philippines (the)" },
-    { "name": "Pitcairn", "code": "Pitcairn" },
     { "name": "Poland", "code": "Poland" },
     { "name": "Portugal", "code": "Portugal" },
     { "name": "Puerto Rico", "code": "Puerto Rico" },

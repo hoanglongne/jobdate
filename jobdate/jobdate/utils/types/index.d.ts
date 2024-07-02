@@ -37,18 +37,25 @@ export type CardProps = {
 
 export interface ExpBarProps {
     user: string;
+    experiences: Exp[],
+    setValue: UseFormSetValue<{ number: string; fullname: string; role: string; work_type: "onsite" | "hydrid" | "remote"; location: string; exp: { role: string; company: string; duration: string; desc: string; }; skills: string; }>;
+    form;
 }
 
 export interface ExpCardProps {
-    exp: {
-        company: string;
-        role: string;
-        duration: string;
-        desc: string;
-    };
+    exp: Exp
     index: number;
     deleteExperience: (idToDelete: number) => void;
+    updateExperience: (updatedExp: Exp, index: number) => void;
+    form;
 };
+
+export interface Exp {
+    company: string;
+    role: string;
+    duration: string;
+    desc: string;
+}
 
 
 export type SwipeButtonProps = {

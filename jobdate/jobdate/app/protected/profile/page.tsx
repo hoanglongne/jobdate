@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { countryData, skills } from '@/utils/data'
 import ExpBar from '@/components/ExpBar'
-import { z } from "zod"
+import { set, z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import {
@@ -27,11 +27,18 @@ import { SupabaseClient } from '@supabase/supabase-js'
 import { Input } from "@/components/ui/input"
 
 
+
 const formSchema = z.object({
     fullname: z.string().min(2, { message: 'Fullname is required' }).max(50),
     role: z.string().min(2, { message: 'role is required' }).max(50),
     work_type: z.enum(["onsite", "hydrid", "remote"], { message: 'Work type is required' }),
     location: z.string().max(50),
+    exp: z.object({
+        company: z.string().min(2, { message: 'Company is required' }).max(70),
+        role: z.string().min(2, { message: 'Role is required' }).max(50),
+        duration: z.string().min(2, { message: 'Duration is required' }).max(50),
+        desc: z.string().min(2, { message: 'Description is required' }).min(30),
+    }).array(),
     // skills: z.array(z.string()).nonempty({ message: 'Skills are required' }),
     skills: z.string(),
     number: z.string().refine((value) => /^[+]{1}(?:[0-9-()/.]\s?){7,15}[0-9]{1}$/.test(value)),
@@ -50,12 +57,15 @@ const Profile = () => {
             role: "",
             work_type: "onsite",
             location: "",
+            exp: [],
             skills: "",
             number: "",
         },
     })
 
     const { setValue } = form;
+    const { watch } = form;
+    const expValues = watch('exp');
 
     useEffect(() => {
         async function fetchProfile() {
@@ -75,24 +85,36 @@ const Profile = () => {
                 setValue('skills', data[0].skillset);
                 setValue('number', data[0].number);
                 setValue('location', data[0].location);
+                setValue('exp', data[0].exp);
             }
         }
 
         fetchProfile().then(() => setLoading(false));
     }, []);
 
+    useEffect(() => {
+        console.log(expValues);
+    }, [expValues]);
+
     async function onSubmit(values: z.infer<typeof formSchema>) {
         const {
             data: { user },
         } = await supabase.auth.getUser();
 
+        if (!user) {
+            console.log("User is null or undefined");
+            return;
+        }
+
         const { error } = await supabase
             .from('users')
-            .upsert({ full_name: values.fullname, email: user?.email, role: values.role, work_type: values.work_type, location: values.location, skillset: values.skills, number: values.number })
+            .upsert({ full_name: values.fullname, email: user.email, role: values.role, work_type: values.work_type, location: values.location, skillset: values.skills, number: values.number, exp: values.exp })
 
         if (error) {
             console.log(error);
         }
+
+        console.log("Exp: ", values.exp);
     }
 
     if (loading) {
@@ -232,7 +254,7 @@ const Profile = () => {
 
                             {/* //* Experience */}
                             <div className='col-span-2 md:col-span-5 xl:col-span-4'>
-                                <ExpBar user={userId} />
+                                <ExpBar user={userId} experiences={expValues} setValue={setValue} form={form} />
                             </div>
 
                             {/* //* Skills */}
@@ -252,7 +274,7 @@ const Profile = () => {
                                                             <SelectContent>
                                                                 {
                                                                     skills.map((skill) => (
-                                                                        <SelectItem key={skill.value} value={skill.value}>{skill.label}</SelectItem>
+                                                                        <SelectItem key={skill.name} value={skill.name}>{skill.code}</SelectItem>
                                                                     ))
                                                                 }
                                                             </SelectContent>

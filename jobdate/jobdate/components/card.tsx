@@ -124,11 +124,11 @@ const Card = ({ jobs, active, removeCard }: CardProps) => {
                         >
                             {isFullDetails ?
                                 <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M5.83871 0.999999L5.83871 13M5.83871 13L11 8.07692M5.83871 13L1 8.07692" stroke="#47475B" stroke-linecap="round" />
+                                    <path d="M5.83871 0.999999L5.83871 13M5.83871 13L11 8.07692M5.83871 13L1 8.07692" stroke="#47475B" strokeLinecap="round" />
                                 </svg>
                                 :
                                 <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M6.16129 13V1M6.16129 1L1 5.92308M6.16129 1L11 5.92308" stroke="#47475B" stroke-linecap="round" />
+                                    <path d="M6.16129 13V1M6.16129 1L1 5.92308M6.16129 1L11 5.92308" stroke="#47475B" strokeLinecap="round" />
                                 </svg>
                             }
                         </button>
