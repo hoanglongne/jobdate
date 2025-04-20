@@ -5,7 +5,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "ts-node prisma/seed.ts"
+    "seed": "ts-node prisma/seed.ts",
+    "scrape": "ts-node services/scrapers/runner.ts",
+    "scrape:user": "ts-node services/scrapers/runner.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.4.2",

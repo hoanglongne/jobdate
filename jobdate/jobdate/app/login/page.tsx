@@ -48,7 +48,6 @@ export default function Login({
       return redirect("/login?message=Could not create user account");
     }
 
-    // Create a record in the users table
     const { error: dbError } = await supabase
       .from('users')
       .insert({
@@ -65,7 +64,6 @@ export default function Login({
 
     if (dbError) {
       console.error('Error creating user record:', dbError);
-      // You might want to delete the auth user here if the DB insert fails
       return redirect("/login?message=Could not complete user registration");
     }
 
@@ -130,7 +128,7 @@ export default function Login({
           Sign Up
         </SubmitButton>
         {searchParams?.message && (
-          <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
+          <p className="mt-2 p-2 bg-foreground/10 text-red-400 text-center">
             {searchParams.message}
           </p>
         )}
