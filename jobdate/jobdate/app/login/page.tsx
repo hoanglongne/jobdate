@@ -4,11 +4,15 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { SubmitButton } from "./submit-button";
 
-export default function Login({
-  searchParams,
-}: {
-  searchParams: { message: string };
-}) {
+// Update the type definition to match Next.js 15.x requirements
+type PageProps = {
+  params: Record<string, string>;
+  searchParams: Record<string, string | string[] | undefined>;
+};
+
+export default function Login({ searchParams }: PageProps) {
+  const message = typeof searchParams.message === 'string' ? searchParams.message : '';
+
   const signIn = async (formData: FormData) => {
     "use server";
 
@@ -127,9 +131,9 @@ export default function Login({
         >
           Sign Up
         </SubmitButton>
-        {searchParams?.message && (
+        {message && (
           <p className="mt-2 p-2 bg-foreground/10 text-red-400 text-center">
-            {searchParams.message}
+            {message}
           </p>
         )}
       </form>

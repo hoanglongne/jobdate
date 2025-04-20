@@ -3,6 +3,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:simple": "next build && next export -o out",
+    "build:standalone": "NEXT_STANDALONE=true next build",
     "start": "next start",
     "lint": "next lint",
     "seed": "ts-node prisma/seed.ts",
@@ -47,6 +49,8 @@
     "@types/react-dom": "18.2.18",
     "dotenv": "^16.5.0",
     "encoding": "^0.1.13",
+    "eslint": "^8.56.0",
+    "eslint-config-next": "^14.1.0",
     "prisma": "^6.6.0",
     "ts-node": "^10.9.2"
   }

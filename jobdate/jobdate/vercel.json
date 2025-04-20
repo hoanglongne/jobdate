@@ -1,0 +1,15 @@
+{
+    "version": 2,
+    "buildCommand": "next build",
+    "installCommand": "yarn install --ignore-engines",
+    "framework": "nextjs",
+    "crons": [
+        {
+            "path": "/api/cron/scrape",
+            "schedule": "0 17 * * *"
+        }
+    ],
+    "env": {
+        "NEXT_TELEMETRY_DISABLED": "1"
+    }
+}

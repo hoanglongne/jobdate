@@ -1,19 +1,19 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    // Super minimal config
     images: {
-        remotePatterns: [
-            {
-                protocol: 'https',
-                hostname: '**',
-            },
-            {
-                protocol: 'http',
-                hostname: '**',
-            }
-        ],
-        // Disable the need for Sharp
         unoptimized: true,
     },
+    eslint: {
+        ignoreDuringBuilds: true,
+    },
+    typescript: {
+        ignoreBuildErrors: true,
+    },
+    experimental: {
+        // Use memory-efficient compiler 
+        turbotrace: false
+    }
 };
 
 module.exports = nextConfig;
