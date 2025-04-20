@@ -11,6 +11,8 @@ const nextConfig = {
                 hostname: '**',
             }
         ],
+        // Disable the need for Sharp
+        unoptimized: true,
     },
 };
 
