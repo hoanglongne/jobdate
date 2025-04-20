@@ -47,6 +47,10 @@ const formSchema = z.object({
 const Profile = () => {
     const [loading, setLoading] = useState(true);
     const [userId, setUserId] = useState("");
+    const [updateStatus, setUpdateStatus] = useState<{ type: 'success' | 'error' | null, message: string }>({
+        type: null,
+        message: ''
+    });
 
     const supabase: SupabaseClient = createClient()
 
@@ -97,24 +101,122 @@ const Profile = () => {
     }, [expValues]);
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        const {
-            data: { user },
-        } = await supabase.auth.getUser();
+        try {
+            setUpdateStatus({ type: null, message: '' }); // Reset status
 
-        if (!user) {
-            console.log("User is null or undefined");
-            return;
+            const {
+                data: { user },
+            } = await supabase.auth.getUser();
+
+            if (!user) {
+                setUpdateStatus({
+                    type: 'error',
+                    message: 'User not authenticated. Please log in again.'
+                });
+                return;
+            }
+
+            // First check if the user exists
+            const { data: existingUser } = await supabase
+                .from('users')
+                .select()
+                .eq('id', user.id)
+                .single();
+
+            let error;
+
+            if (existingUser) {
+                // Check if email is being used by another user
+                const { data: emailCheck } = await supabase
+                    .from('users')
+                    .select('id')
+                    .eq('email', user.email)
+                    .neq('id', user.id)
+                    .single();
+
+                if (emailCheck) {
+                    setUpdateStatus({
+                        type: 'error',
+                        message: 'This email is already being used by another account.'
+                    });
+                    return;
+                }
+
+                // Update existing user
+                const { error: updateError } = await supabase
+                    .from('users')
+                    .update({
+                        full_name: values.fullname,
+                        email: user.email,
+                        role: values.role,
+                        work_type: values.work_type,
+                        location: values.location,
+                        skillset: values.skills,
+                        number: values.number,
+                        exp: values.exp || []
+                    })
+                    .eq('id', user.id);
+                error = updateError;
+            } else {
+                // Check if email is already in use
+                const { data: emailCheck } = await supabase
+                    .from('users')
+                    .select('id')
+                    .eq('email', user.email)
+                    .single();
+
+                if (emailCheck) {
+                    setUpdateStatus({
+                        type: 'error',
+                        message: 'This email is already being used by another account.'
+                    });
+                    return;
+                }
+
+                // Insert new user
+                const { error: insertError } = await supabase
+                    .from('users')
+                    .insert({
+                        id: user.id,
+                        full_name: values.fullname,
+                        email: user.email,
+                        role: values.role,
+                        work_type: values.work_type,
+                        location: values.location,
+                        skillset: values.skills,
+                        number: values.number,
+                        exp: values.exp || []
+                    });
+                error = insertError;
+            }
+
+            if (error) {
+                console.error("Error updating profile:", error);
+                if (error.code === '23505') { // Unique constraint violation
+                    setUpdateStatus({
+                        type: 'error',
+                        message: 'This email is already being used by another account.'
+                    });
+                } else {
+                    setUpdateStatus({
+                        type: 'error',
+                        message: 'Failed to update profile. Please try again.'
+                    });
+                }
+                return;
+            }
+
+            setUpdateStatus({
+                type: 'success',
+                message: 'Profile updated successfully!'
+            });
+        } catch (error) {
+            console.error("Unexpected error:", error);
+            setUpdateStatus({
+                type: 'error',
+                message: 'An unexpected error occurred. Please try again.'
+            });
         }
-
-        const { error } = await supabase
-            .from('users')
-            .upsert({ full_name: values.fullname, email: user.email, role: values.role, work_type: values.work_type, location: values.location, skillset: values.skills, number: values.number, exp: values.exp })
-
-        if (error) {
-            console.log(error);
-        }
-
-        console.log("Exp: ", values.exp);
     }
 
     if (loading) {
@@ -128,6 +230,15 @@ const Profile = () => {
                 <div className='z-0 bg-[#FFEEEE] border-2 border-profile p-7 mt-7 rounded-2xl'>
                     <p className='font-medium'>This is where to store and update your information, which will be use to gathering new job for you every day!  At cursus nunc amet ipsum in. Nunc nisi auctor.</p>
                 </div>
+
+                {/* Add status message */}
+                {updateStatus.type && (
+                    <div className={`mt-4 p-4 rounded-md ${updateStatus.type === 'success' ? 'bg-green-100 text-green-800 border border-green-400' :
+                        'bg-red-100 text-red-800 border border-red-400'
+                        }`}>
+                        {updateStatus.message}
+                    </div>
+                )}
 
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)}>

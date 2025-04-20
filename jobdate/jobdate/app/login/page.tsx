@@ -31,12 +31,12 @@ export default function Login({
   const signUp = async (formData: FormData) => {
     "use server";
 
-    const origin = headers().get("origin");
+    const origin = (await headers()).get("origin");
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
     const supabase = createClient();
 
-    const { error } = await supabase.auth.signUp({
+    const { data: authData, error: authError } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -44,8 +44,29 @@ export default function Login({
       },
     });
 
-    if (error) {
-      return redirect("/login?message=Could not authenticate user");
+    if (authError || !authData.user) {
+      return redirect("/login?message=Could not create user account");
+    }
+
+    // Create a record in the users table
+    const { error: dbError } = await supabase
+      .from('users')
+      .insert({
+        id: authData.user.id,
+        email: email,
+        full_name: '',
+        role: '',
+        work_type: 'onsite',
+        location: '',
+        skillset: '',
+        number: '',
+        exp: []
+      });
+
+    if (dbError) {
+      console.error('Error creating user record:', dbError);
+      // You might want to delete the auth user here if the DB insert fails
+      return redirect("/login?message=Could not complete user registration");
     }
 
     return redirect("/login?message=Check email to continue sign in process");

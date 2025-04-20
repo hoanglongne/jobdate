@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @db.Uuid
+  fullName  String?  @map("full_name") @db.VarChar(100)
+  email     String?  @db.VarChar(100)
+  role      String?  @db.VarChar(100)
+  workType  String?  @map("work_type") @db.VarChar(20)
+  location  String?  @db.VarChar(100)
+  skillset  String?
+  number    String?  @db.VarChar(20)
+  exp       Json?
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  jobsFetched JobFetch[]
+
+  @@map("users")
+}
+
+model Job {
+  id           String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  role         String   @db.VarChar(200)
+  companyName  String   @map("company_name") @db.VarChar(200)
+  yoe          Int[]
+  jd           Json?
+  jobLink      String?  @map("job_link") @db.VarChar(500)
+  logoUrl      String?  @map("logo_url") @db.VarChar(500)
+  skillset     String[]
+  salaryRange  String[] @map("salary_range")
+  workType     String?  @map("work_type") @db.VarChar(50)
+  contractType String?  @map("contract_type") @db.VarChar(50)
+  location     String?  @db.VarChar(100)
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  jobsFetched  JobFetch[]
+
+  @@map("jobs")
+}
+
+model JobFetch {
+  id        String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  user      String   @db.Uuid
+  jobs      String   @db.Uuid
+  action    String?  @db.VarChar(10)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  
+  userData  User     @relation(fields: [user], references: [id])
+  jobData   Job      @relation(fields: [jobs], references: [id])
+
+  @@map("jobs_fetched")
+}

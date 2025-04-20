@@ -2,6 +2,7 @@ import Swipe from "@/components/Swipe";
 import { createClient } from "@/utils/supabase/server";
 import { CardData } from "@/utils/types";
 import { redirect } from "next/navigation";
+import { cardData } from "@/utils/data";
 
 
 export default async function SwipePage() {
