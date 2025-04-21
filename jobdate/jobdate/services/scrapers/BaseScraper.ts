@@ -2,6 +2,7 @@ import { JobScraper, ScrapedJob, UserProfile } from './types';
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 import puppeteer, { Page } from 'puppeteer';
+import { getBrowserlessContentApiUrl, getBrowserlessWsUrl } from './config/browserless';
 
 export abstract class BaseScraper implements JobScraper {
     name: string;
@@ -33,14 +34,35 @@ export abstract class BaseScraper implements JobScraper {
         }
     }
 
-    // For JavaScript-heavy sites that require a browser
+    // For JavaScript-heavy sites, use browserless.io instead of local Puppeteer
     protected async fetchWithPuppeteer(url: string): Promise<string> {
+        try {
+            // First try using the content API for efficiency (uses fewer sessions)
+            console.log(`Fetching ${url} with Browserless Content API`);
+            const browserlessUrl = getBrowserlessContentApiUrl(url);
+            const response = await axios.get(browserlessUrl, { timeout: 60000 });
+
+            if (response.status === 200 && response.data) {
+                return response.data;
+            }
+
+            // If that fails, fall back to WebSocket connection
+            console.log(`Content API failed, falling back to WebSocket connection for ${url}`);
+            return await this.fetchWithBrowserlessWebSocket(url);
+        } catch (error: any) {
+            console.error(`Error with Browserless Content API, trying WebSocket: ${error.message}`);
+            return await this.fetchWithBrowserlessWebSocket(url);
+        }
+    }
+
+    // Connect to browserless.io via WebSocket
+    private async fetchWithBrowserlessWebSocket(url: string): Promise<string> {
         let browser;
         try {
-            browser = await puppeteer.launch({
-                headless: true,
-                args: ['--no-sandbox', '--disable-setuid-sandbox']
-            });
+            console.log(`Connecting to Browserless.io via WebSocket for ${url}`);
+            const browserWSEndpoint = getBrowserlessWsUrl();
+            browser = await puppeteer.connect({ browserWSEndpoint });
+
             const page = await browser.newPage();
             await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36');
 
@@ -55,11 +77,11 @@ export abstract class BaseScraper implements JobScraper {
             const content = await page.content();
             return content;
         } catch (error) {
-            console.error(`Error fetching with Puppeteer ${url}:`, error);
+            console.error(`Error fetching with Browserless WebSocket ${url}:`, error);
             return '';
         } finally {
             if (browser) {
-                await browser.close();
+                await browser.disconnect();
             }
         }
     }
