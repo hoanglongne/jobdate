@@ -2,7 +2,6 @@ import { BaseScraper } from './BaseScraper';
 import { ScrapedJob, UserProfile } from './types';
 import * as cheerio from 'cheerio';
 
-// Common tech skills to look for in job descriptions
 const COMMON_SKILLS = [
     'JavaScript', 'TypeScript', 'React', 'Angular', 'Vue.js', 'Node.js',
     'Express', 'Next.js', 'HTML', 'CSS', 'SASS', 'LESS', 'Tailwind',
@@ -26,46 +25,17 @@ export class LinkedInScraper extends BaseScraper {
     }
 
     generateSearchUrl(userProfile: UserProfile): string {
-        // Construct LinkedIn search URL based on user profile
         const baseUrl = 'https://www.linkedin.com/jobs/search/?';
 
         // Prepare search parameters
         const params = new URLSearchParams();
 
-        // Add user's role/position
         if (userProfile.role) {
             params.append('keywords', userProfile.role);
         }
 
-        // Add location
-        if (userProfile.location) {
-            params.append('location', userProfile.location);
-        }
-
-        // Add remote filter if user prefers remote work
-        if (userProfile.work_type === 'remote') {
-            params.append('f_WT', '2');
-        } else if (userProfile.work_type === 'hydrid') {
-            params.append('f_WT', '1');
-        } else {
-            params.append('f_WT', '0'); // onsite
-        }
-
-        // Add experience level filter based on user's experience
-        // Experience levels on LinkedIn: 1 (Internship), 2 (Entry level), 3 (Associate), 4 (Mid-Senior), 5 (Director), 6 (Executive)
-        const yearsOfExperience = this.estimateYearsOfExperience(userProfile.exp);
-        if (yearsOfExperience < 1) {
-            params.append('f_E', '1,2'); // Internship, Entry level
-        } else if (yearsOfExperience < 3) {
-            params.append('f_E', '2,3'); // Entry level, Associate
-        } else if (yearsOfExperience < 6) {
-            params.append('f_E', '3,4'); // Associate, Mid-Senior
-        } else {
-            params.append('f_E', '4,5,6'); // Mid-Senior, Director, Executive
-        }
-
-        // Set sorting to recent jobs
-        params.append('sortBy', 'DD'); // Date descending (most recent first)
+        // Add refresh parameter
+        params.append('refresh', 'true');
 
         // Generate the full URL
         return `${baseUrl}${params.toString()}`;
